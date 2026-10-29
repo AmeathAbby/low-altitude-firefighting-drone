@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="BaseMaoForDrone">
+    <static>true</static>
+    <link name="map">
+      <visual name="visual">
+        <geometry>
+          <mesh><uri>model://BaseMaoForDrone/meshes/BaseMaoForDrone.dae</uri></mesh>
+        </geometry>
+      </visual>
+      <!-- 地图是静态的，碰撞先用一个水平面；别直接拿整张地图网格做碰撞，ODE 会很慢 -->
+      <collision name="collision">
+        <geometry><plane><normal>0 0 1</normal><size>200 200</size></plane></geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,700 @@
+<COLLADA xmlns="http://www.collada.org/2005/11/COLLADASchema" version="1.4.1">
+  <asset>
+    <created>2026-10-11T17:57:35.209445</created>
+    <modified>2026-10-11T17:57:35.209448</modified>
+    <unit name="metre" meter="1.0" />
+    <up_axis>Z_UP</up_axis>
+  </asset>
+  <library_cameras>
+    <camera id="CA-Camera" name="CA-Camera">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov>39.59775533577129</xfov>
+            <yfov>26.991466429975517</yfov>
+            <znear>0.10000000149011612</znear>
+            <zfar>100.0</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+    </camera>
+    <camera id="CA-Camera.001" name="CA-Camera.001">
+      <optics>
+        <technique_common>
+          <perspective>
+            <xfov>39.59775533577129</xfov>
+            <yfov>26.991469845070103</yfov>
+            <znear>0.10000000149011612</znear>
+            <zfar>100.0</zfar>
+          </perspective>
+        </technique_common>
+      </optics>
+    </camera>
+  </library_cameras>
+  <library_effects>
+    <effect id="IID-_0007" name="IID-_0007">
+      <profile_COMMON>
+        <image id="IID-_0004" name="IID-_0004">
+          <init_from>textures/basemap.png</init_from>
+        </image>
+        <newparam sid="IID-_0005">
+          <surface type="2D">
+            <init_from>IID-_0004</init_from>
+            <format>A8R8G8B8</format>
+          </surface>
+        </newparam>
+        <newparam sid="IID-_0006">
+          <sampler2D>
+            <source>IID-_0005</source>
+          </sampler2D>
+        </newparam>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color>0.0 0.0 0.0 1.0</color>
+            </emission>
+            <ambient>
+              <color>0.0 0.0 0.0 1.0</color>
+            </ambient>
+            <diffuse>
+              <texture texture="IID-_0006" texcoord="ACTIVE_UV" />
+            </diffuse>
+            <specular>
+              <color>0.0 0.0 0.0 1.0</color>
+            </specular>
+            <shininess>
+              <float>0.0</float>
+            </shininess>
+            <reflective>
+              <color>0.0 0.0 0.0 1.0</color>
+            </reflective>
+            <reflectivity>
+              <float>0.0</float>
+            </reflectivity>
+            <transparent>
+              <color>0.0 0.0 0.0 1.0</color>
+            </transparent>
+            <transparency>
+              <float>1.0</float>
+            </transparency>
+          </lambert>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+    </effect>
+    <effect id="IID-_0011" name="IID-_0011">
+      <profile_COMMON>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color>0.0 0.0 0.0 1.0</color>
+            </emission>
+            <ambient>
+              <color>0.0 0.0 0.0 1.0</color>
+            </ambient>
+            <diffuse>
+              <color>1.0 0.6653875708580017 0.9215819835662842 1.0</color>
+            </diffuse>
+            <specular>
+              <color>0.0 0.0 0.0 1.0</color>
+            </specular>
+            <shininess>
+              <float>0.0</float>
+            </shininess>
+            <reflective>
+              <color>0.0 0.0 0.0 1.0</color>
+            </reflective>
+            <reflectivity>
+              <float>0.0</float>
+            </reflectivity>
+            <transparent>
+              <color>0.0 0.0 0.0 1.0</color>
+            </transparent>
+            <transparency>
+              <float>1.0</float>
+            </transparency>
+          </lambert>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+    </effect>
+    <effect id="IID-_0015" name="IID-_0015">
+      <profile_COMMON>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color>0.0 0.0 0.0 1.0</color>
+            </emission>
+            <ambient>
+              <color>0.0 0.0 0.0 1.0</color>
+            </ambient>
+            <diffuse>
+              <color>1.0 0.6653875708580017 0.9215819835662842 1.0</color>
+            </diffuse>
+            <specular>
+              <color>0.0 0.0 0.0 1.0</color>
+            </specular>
+            <shininess>
+              <float>0.0</float>
+            </shininess>
+            <reflective>
+              <color>0.0 0.0 0.0 1.0</color>
+            </reflective>
+            <reflectivity>
+              <float>0.0</float>
+            </reflectivity>
+            <transparent>
+              <color>0.0 0.0 0.0 1.0</color>
+            </transparent>
+            <transparency>
+              <float>1.0</float>
+            </transparency>
+          </lambert>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+    </effect>
+    <effect id="IID-_0028" name="IID-_0028">
+      <profile_COMMON>
+        <technique sid="common">
+          <lambert>
+            <emission>
+              <color>0.0 0.0 0.0 1.0</color>
+            </emission>
+            <ambient>
+              <color>0.0 0.0 0.0 1.0</color>
+            </ambient>
+            <diffuse>
+              <color>0.800000011920929 0.800000011920929 0.800000011920929 1.0</color>
+            </diffuse>
+            <specular>
+              <color>0.0 0.0 0.0 1.0</color>
+            </specular>
+            <shininess>
+              <float>0.0</float>
+            </shininess>
+            <reflective>
+              <color>0.0 0.0 0.0 1.0</color>
+            </reflective>
+            <reflectivity>
+              <float>0.0</float>
+            </reflectivity>
+            <transparent>
+              <color>0.0 0.0 0.0 1.0</color>
+            </transparent>
+            <transparency>
+              <float>1.0</float>
+            </transparency>
+          </lambert>
+        </technique>
+        <extra>
+          <technique profile="GOOGLEEARTH">
+            <double_sided>1</double_sided>
+          </technique>
+        </extra>
+      </profile_COMMON>
+    </effect>
+  </library_effects>
+  <library_geometries>
+    <geometry id="ME-&#24179;&#38754;" name="ME-&#24179;&#38754;">
+      <mesh>
+        <source id="IID-_0001">
+          <float_array count="30" id="IID-_0001-array">-1 -1 0 1 -1 0 -1 1 0 1 1 0 -1 -1 3 1 -1 3 -1 1 3 1 1 3 -1 -1 3 1 -1 3</float_array>
+          <technique_common>
+            <accessor count="10" source="#IID-_0001-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0002">
+          <float_array count="30" id="IID-_0002-array">0.5773503 0.5773503 0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503 -0.5773503 0.5773503 -0.5773503 -0.5773503 0.5773503 1 0 0 -1 0 0 0.7071068 -0.7071068 0 -0.7071068 -0.7071068 0 0 1 0 0 1 0</float_array>
+          <technique_common>
+            <accessor count="10" source="#IID-_0002-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0003">
+          <float_array count="40" id="IID-_0003-array">0 0 1 0 1 1 0 1 0 1 1 1 1 1 0 1 1 1 1 0 1 0 1 1 0 0 0 1 0 1 0 0 1 0 0 0 0 0 1 0</float_array>
+          <technique_common>
+            <accessor count="20" source="#IID-_0003-array" stride="2">
+              <param type="float" name="S" />
+              <param type="float" name="T" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="IID-_0001-vertices">
+          <input semantic="POSITION" source="#IID-_0001" />
+        </vertices>
+        <polylist count="5" material="slot000">
+          <input offset="0" semantic="VERTEX" source="#IID-_0001-vertices" />
+          <input offset="0" semantic="NORMAL" source="#IID-_0002" />
+          <input offset="1" semantic="TEXCOORD" source="#IID-_0003" set="0" />
+          <vcount>4 4 4 4 4</vcount>
+          <p>0 0 1 1 3 2 2 3 2 4 3 5 7 6 6 7 3 8 1 9 5 10 7 11 0 12 2 13 6 14 4 15 1 16 0 17 8 18 9 19</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="BLENDER028">
+          <layer_names>
+            <name name="UV&#36148;&#22270;" refid="IID-_0003" type="UV" />
+          </layer_names>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="ME-&#26609;&#20307;" name="ME-&#26609;&#20307;">
+      <mesh>
+        <source id="IID-_0008">
+          <float_array count="192" id="IID-_0008-array">0 0.1 -1 0 0.1 1 0.01950903 0.09807853 -1 0.01950903 0.09807853 1 0.03826835 0.09238795 -1 0.03826835 0.09238795 1 0.05555702 0.08314696 -1 0.05555702 0.08314696 1 0.07071068 0.07071068 -1 0.07071068 0.07071068 1 0.08314696 0.05555702 -1 0.08314696 0.05555702 1 0.09238795 0.03826835 -1 0.09238795 0.03826835 1 0.09807853 0.01950903 -1 0.09807853 0.01950903 1 0.1 0 -1 0.1 0 1 0.09807853 -0.01950903 -1 0.09807853 -0.01950903 1 0.09238795 -0.03826835 -1 0.09238795 -0.03826835 1 0.08314696 -0.05555702 -1 0.08314696 -0.05555702 1 0.07071068 -0.07071068 -1 0.07071068 -0.07071068 1 0.05555702 -0.08314696 -1 0.05555702 -0.08314696 1 0.03826835 -0.09238795 -1 0.03826835 -0.09238795 1 0.01950903 -0.09807853 -1 0.01950903 -0.09807853 1 0 -0.1 -1 0 -0.1 1 -0.01950903 -0.09807853 -1 -0.01950903 -0.09807853 1 -0.03826835 -0.09238795 -1 -0.03826835 -0.09238795 1 -0.05555702 -0.08314696 -1 -0.05555702 -0.08314696 1 -0.07071068 -0.07071068 -1 -0.07071068 -0.07071068 1 -0.08314696 -0.05555702 -1 -0.08314696 -0.05555702 1 -0.09238795 -0.03826835 -1 -0.09238795 -0.03826835 1 -0.09807853 -0.01950903 -1 -0.09807853 -0.01950903 1 -0.1 0 -1 -0.1 0 1 -0.09807853 0.01950903 -1 -0.09807853 0.01950903 1 -0.09238795 0.03826835 -1 -0.09238795 0.03826835 1 -0.08314696 0.05555702 -1 -0.08314696 0.05555702 1 -0.07071068 0.07071068 -1 -0.07071068 0.07071068 1 -0.05555702 0.08314696 -1 -0.05555702 0.08314696 1 -0.03826835 0.09238795 -1 -0.03826835 0.09238795 1 -0.01950903 0.09807853 -1 -0.01950903 0.09807853 1</float_array>
+          <technique_common>
+            <accessor count="64" source="#IID-_0008-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0009">
+          <float_array count="192" id="IID-_0009-array">0 0.7278827 -0.6857015 0 0.7278827 0.6857015 0.1420029 0.7138966 -0.6857016 0.1420029 0.7138966 0.6857016 0.2785487 0.672476 -0.6857015 0.2785487 0.672476 0.6857015 0.4043899 0.6052124 -0.6857016 0.4043899 0.6052124 0.6857016 0.5146909 0.5146909 -0.6857014 0.5146909 0.5146909 0.6857014 0.6052124 0.4043899 -0.6857016 0.6052124 0.4043899 0.6857016 0.672476 0.2785487 -0.6857015 0.672476 0.2785487 0.6857015 0.7138966 0.1420029 -0.6857016 0.7138966 0.1420029 0.6857016 0.7278827 0 -0.6857015 0.7278827 0 0.6857015 0.7138966 -0.1420029 -0.6857016 0.7138966 -0.1420029 0.6857016 0.672476 -0.2785487 -0.6857015 0.672476 -0.2785487 0.6857015 0.6052124 -0.4043899 -0.6857016 0.6052124 -0.4043899 0.6857016 0.5146909 -0.5146909 -0.6857014 0.5146909 -0.5146909 0.6857014 0.4043899 -0.6052124 -0.6857016 0.4043899 -0.6052124 0.6857016 0.2785487 -0.672476 -0.6857015 0.2785487 -0.672476 0.6857015 0.1420029 -0.7138966 -0.6857016 0.1420029 -0.7138966 0.6857016 0 -0.7278827 -0.6857015 0 -0.7278827 0.6857015 -0.1420029 -0.7138966 -0.6857016 -0.1420029 -0.7138966 0.6857016 -0.2785487 -0.672476 -0.6857015 -0.2785487 -0.672476 0.6857015 -0.4043899 -0.6052124 -0.6857016 -0.4043899 -0.6052124 0.6857016 -0.5146909 -0.5146909 -0.6857014 -0.5146909 -0.5146909 0.6857014 -0.6052124 -0.4043899 -0.6857016 -0.6052124 -0.4043899 0.6857016 -0.672476 -0.2785487 -0.6857015 -0.672476 -0.2785487 0.6857015 -0.7138966 -0.1420029 -0.6857016 -0.7138966 -0.1420029 0.6857016 -0.7278827 0 -0.6857015 -0.7278827 0 0.6857015 -0.7138966 0.1420029 -0.6857016 -0.7138966 0.1420029 0.6857016 -0.672476 0.2785487 -0.6857015 -0.672476 0.2785487 0.6857015 -0.6052124 0.4043899 -0.6857016 -0.6052124 0.4043899 0.6857016 -0.5146909 0.5146909 -0.6857014 -0.5146909 0.5146909 0.6857014 -0.4043899 0.6052124 -0.6857016 -0.4043899 0.6052124 0.6857016 -0.2785487 0.672476 -0.6857015 -0.2785487 0.672476 0.6857015 -0.1420029 0.7138966 -0.6857016 -0.1420029 0.7138966 0.6857016</float_array>
+          <technique_common>
+            <accessor count="64" source="#IID-_0009-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0010">
+          <float_array count="384" id="IID-_0010-array">1 0.5 1 1 0.96875 1 0.96875 0.5 0.96875 0.5 0.96875 1 0.9375 1 0.9375 0.5 0.9375 0.5 0.9375 1 0.90625 1 0.90625 0.5 0.90625 0.5 0.90625 1 0.875 1 0.875 0.5 0.875 0.5 0.875 1 0.84375 1 0.84375 0.5 0.84375 0.5 0.84375 1 0.8125 1 0.8125 0.5 0.8125 0.5 0.8125 1 0.78125 1 0.78125 0.5 0.78125 0.5 0.78125 1 0.75 1 0.75 0.5 0.75 0.5 0.75 1 0.71875 1 0.71875 0.5 0.71875 0.5 0.71875 1 0.6875 1 0.6875 0.5 0.6875 0.5 0.6875 1 0.65625 1 0.65625 0.5 0.65625 0.5 0.65625 1 0.625 1 0.625 0.5 0.625 0.5 0.625 1 0.59375 1 0.59375 0.5 0.59375 0.5 0.59375 1 0.5625 1 0.5625 0.5 0.5625 0.5 0.5625 1 0.53125 1 0.53125 0.5 0.53125 0.5 0.53125 1 0.5 1 0.5 0.5 0.5 0.5 0.5 1 0.46875 1 0.46875 0.5 0.46875 0.5 0.46875 1 0.4375 1 0.4375 0.5 0.4375 0.5 0.4375 1 0.40625 1 0.40625 0.5 0.40625 0.5 0.40625 1 0.375 1 0.375 0.5 0.375 0.5 0.375 1 0.34375 1 0.34375 0.5 0.34375 0.5 0.34375 1 0.3125 1 0.3125 0.5 0.3125 0.5 0.3125 1 0.28125 1 0.28125 0.5 0.28125 0.5 0.28125 1 0.25 1 0.25 0.5 0.25 0.5 0.25 1 0.21875 1 0.21875 0.5 0.21875 0.5 0.21875 1 0.1875 1 0.1875 0.5 0.1875 0.5 0.1875 1 0.15625 1 0.15625 0.5 0.15625 0.5 0.15625 1 0.125 1 0.125 0.5 0.125 0.5 0.125 1 0.09375 1 0.09375 0.5 0.09375 0.5 0.09375 1 0.0625 1 0.0625 0.5 0.2968217 0.4853885 0.25 0.49 0.2031783 0.4853885 0.158156 0.4717311 0.1166632 0.4495527 0.08029437 0.4197056 0.05044731 0.3833368 0.02826893 0.341844 0.01461156 0.2968217 0.01000001 0.25 0.01461156 0.2031783 0.02826893 0.158156 0.05044731 0.1166632 0.08029437 0.08029437 0.1166632 0.05044731 0.158156 0.02826893 0.2031783 0.01461156 0.25 0.01000001 0.2968217 0.01461156 0.341844 0.02826893 0.3833368 0.05044731 0.4197056 0.08029437 0.4495527 0.1166632 0.4717311 0.158156 0.4853885 0.2031783 0.49 0.25 0.4853885 0.2968217 0.4717311 0.341844 0.4495527 0.3833368 0.4197056 0.4197056 0.3833368 0.4495527 0.341844 0.4717311 0.0625 0.5 0.0625 1 0.03125 1 0.03125 0.5 0.03125 0.5 0.03125 1 0 1 0 0.5 0.75 0.49 0.7968217 0.4853885 0.841844 0.4717311 0.8833368 0.4495527 0.9197056 0.4197056 0.9495527 0.3833368 0.9717311 0.341844 0.9853885 0.2968217 0.99 0.25 0.9853885 0.2031783 0.9717311 0.158156 0.9495527 0.1166632 0.9197056 0.08029437 0.8833368 0.05044731 0.841844 0.02826893 0.7968217 0.01461156 0.75 0.01000001 0.7031783 0.01461156 0.658156 0.02826893 0.6166632 0.05044731 0.5802944 0.08029437 0.5504473 0.1166632 0.5282689 0.158156 0.5146115 0.2031783 0.51 0.25 0.5146115 0.2968217 0.5282689 0.341844 0.5504473 0.3833368 0.5802944 0.4197056 0.6166632 0.4495527 0.658156 0.4717311 0.7031783 0.4853885</float_array>
+          <technique_common>
+            <accessor count="192" source="#IID-_0010-array" stride="2">
+              <param type="float" name="S" />
+              <param type="float" name="T" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="IID-_0008-vertices">
+          <input semantic="POSITION" source="#IID-_0008" />
+        </vertices>
+        <polylist count="34" material="slot000">
+          <input offset="0" semantic="VERTEX" source="#IID-_0008-vertices" />
+          <input offset="0" semantic="NORMAL" source="#IID-_0009" />
+          <input offset="1" semantic="TEXCOORD" source="#IID-_0010" set="0" />
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 32 4 4 32</vcount>
+          <p>0 0 1 1 3 2 2 3 2 4 3 5 5 6 4 7 4 8 5 9 7 10 6 11 6 12 7 13 9 14 8 15 8 16 9 17 11 18 10 19 10 20 11 21 13 22 12 23 12 24 13 25 15 26 14 27 14 28 15 29 17 30 16 31 16 32 17 33 19 34 18 35 18 36 19 37 21 38 20 39 20 40 21 41 23 42 22 43 22 44 23 45 25 46 24 47 24 48 25 49 27 50 26 51 26 52 27 53 29 54 28 55 28 56 29 57 31 58 30 59 30 60 31 61 33 62 32 63 32 64 33 65 35 66 34 67 34 68 35 69 37 70 36 71 36 72 37 73 39 74 38 75 38 76 39 77 41 78 40 79 40 80 41 81 43 82 42 83 42 84 43 85 45 86 44 87 44 88 45 89 47 90 46 91 46 92 47 93 49 94 48 95 48 96 49 97 51 98 50 99 50 100 51 101 53 102 52 103 52 104 53 105 55 106 54 107 54 108 55 109 57 110 56 111 56 112 57 113 59 114 58 115 58 116 59 117 61 118 60 119 3 120 1 121 63 122 61 123 59 124 57 125 55 126 53 127 51 128 49 129 47 130 45 131 43 132 41 133 39 134 37 135 35 136 33 137 31 138 29 139 27 140 25 141 23 142 21 143 19 144 17 145 15 146 13 147 11 148 9 149 7 150 5 151 60 152 61 153 63 154 62 155 62 156 63 157 1 158 0 159 0 160 2 161 4 162 6 163 8 164 10 165 12 166 14 167 16 168 18 169 20 170 22 171 24 172 26 173 28 174 30 175 32 176 34 177 36 178 38 179 40 180 42 181 44 182 46 183 48 184 50 185 52 186 54 187 56 188 58 189 60 190 62 191</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="BLENDER028">
+          <layer_names>
+            <name name="UV&#36148;&#22270;" refid="IID-_0010" type="UV" />
+          </layer_names>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="ME-&#26609;&#20307;.001" name="ME-&#26609;&#20307;.001">
+      <mesh>
+        <source id="IID-_0012">
+          <float_array count="192" id="IID-_0012-array">0 0.1 -1 0 0.1 1 0.01950903 0.09807853 -1 0.01950903 0.09807853 1 0.03826835 0.09238795 -1 0.03826835 0.09238795 1 0.05555702 0.08314696 -1 0.05555702 0.08314696 1 0.07071068 0.07071068 -1 0.07071068 0.07071068 1 0.08314696 0.05555702 -1 0.08314696 0.05555702 1 0.09238795 0.03826835 -1 0.09238795 0.03826835 1 0.09807853 0.01950903 -1 0.09807853 0.01950903 1 0.1 0 -1 0.1 0 1 0.09807853 -0.01950903 -1 0.09807853 -0.01950903 1 0.09238795 -0.03826835 -1 0.09238795 -0.03826835 1 0.08314696 -0.05555702 -1 0.08314696 -0.05555702 1 0.07071068 -0.07071068 -1 0.07071068 -0.07071068 1 0.05555702 -0.08314696 -1 0.05555702 -0.08314696 1 0.03826835 -0.09238795 -1 0.03826835 -0.09238795 1 0.01950903 -0.09807853 -1 0.01950903 -0.09807853 1 0 -0.1 -1 0 -0.1 1 -0.01950903 -0.09807853 -1 -0.01950903 -0.09807853 1 -0.03826835 -0.09238795 -1 -0.03826835 -0.09238795 1 -0.05555702 -0.08314696 -1 -0.05555702 -0.08314696 1 -0.07071068 -0.07071068 -1 -0.07071068 -0.07071068 1 -0.08314696 -0.05555702 -1 -0.08314696 -0.05555702 1 -0.09238795 -0.03826835 -1 -0.09238795 -0.03826835 1 -0.09807853 -0.01950903 -1 -0.09807853 -0.01950903 1 -0.1 0 -1 -0.1 0 1 -0.09807853 0.01950903 -1 -0.09807853 0.01950903 1 -0.09238795 0.03826835 -1 -0.09238795 0.03826835 1 -0.08314696 0.05555702 -1 -0.08314696 0.05555702 1 -0.07071068 0.07071068 -1 -0.07071068 0.07071068 1 -0.05555702 0.08314696 -1 -0.05555702 0.08314696 1 -0.03826835 0.09238795 -1 -0.03826835 0.09238795 1 -0.01950903 0.09807853 -1 -0.01950903 0.09807853 1</float_array>
+          <technique_common>
+            <accessor count="64" source="#IID-_0012-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0013">
+          <float_array count="192" id="IID-_0013-array">0 0.7278827 -0.6857015 0 0.7278827 0.6857015 0.1420029 0.7138966 -0.6857016 0.1420029 0.7138966 0.6857016 0.2785487 0.672476 -0.6857015 0.2785487 0.672476 0.6857015 0.4043899 0.6052124 -0.6857016 0.4043899 0.6052124 0.6857016 0.5146909 0.5146909 -0.6857014 0.5146909 0.5146909 0.6857014 0.6052124 0.4043899 -0.6857016 0.6052124 0.4043899 0.6857016 0.672476 0.2785487 -0.6857015 0.672476 0.2785487 0.6857015 0.7138966 0.1420029 -0.6857016 0.7138966 0.1420029 0.6857016 0.7278827 0 -0.6857015 0.7278827 0 0.6857015 0.7138966 -0.1420029 -0.6857016 0.7138966 -0.1420029 0.6857016 0.672476 -0.2785487 -0.6857015 0.672476 -0.2785487 0.6857015 0.6052124 -0.4043899 -0.6857016 0.6052124 -0.4043899 0.6857016 0.5146909 -0.5146909 -0.6857014 0.5146909 -0.5146909 0.6857014 0.4043899 -0.6052124 -0.6857016 0.4043899 -0.6052124 0.6857016 0.2785487 -0.672476 -0.6857015 0.2785487 -0.672476 0.6857015 0.1420029 -0.7138966 -0.6857016 0.1420029 -0.7138966 0.6857016 0 -0.7278827 -0.6857015 0 -0.7278827 0.6857015 -0.1420029 -0.7138966 -0.6857016 -0.1420029 -0.7138966 0.6857016 -0.2785487 -0.672476 -0.6857015 -0.2785487 -0.672476 0.6857015 -0.4043899 -0.6052124 -0.6857016 -0.4043899 -0.6052124 0.6857016 -0.5146909 -0.5146909 -0.6857014 -0.5146909 -0.5146909 0.6857014 -0.6052124 -0.4043899 -0.6857016 -0.6052124 -0.4043899 0.6857016 -0.672476 -0.2785487 -0.6857015 -0.672476 -0.2785487 0.6857015 -0.7138966 -0.1420029 -0.6857016 -0.7138966 -0.1420029 0.6857016 -0.7278827 0 -0.6857015 -0.7278827 0 0.6857015 -0.7138966 0.1420029 -0.6857016 -0.7138966 0.1420029 0.6857016 -0.672476 0.2785487 -0.6857015 -0.672476 0.2785487 0.6857015 -0.6052124 0.4043899 -0.6857016 -0.6052124 0.4043899 0.6857016 -0.5146909 0.5146909 -0.6857014 -0.5146909 0.5146909 0.6857014 -0.4043899 0.6052124 -0.6857016 -0.4043899 0.6052124 0.6857016 -0.2785487 0.672476 -0.6857015 -0.2785487 0.672476 0.6857015 -0.1420029 0.7138966 -0.6857016 -0.1420029 0.7138966 0.6857016</float_array>
+          <technique_common>
+            <accessor count="64" source="#IID-_0013-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0014">
+          <float_array count="384" id="IID-_0014-array">1 0.5 1 1 0.96875 1 0.96875 0.5 0.96875 0.5 0.96875 1 0.9375 1 0.9375 0.5 0.9375 0.5 0.9375 1 0.90625 1 0.90625 0.5 0.90625 0.5 0.90625 1 0.875 1 0.875 0.5 0.875 0.5 0.875 1 0.84375 1 0.84375 0.5 0.84375 0.5 0.84375 1 0.8125 1 0.8125 0.5 0.8125 0.5 0.8125 1 0.78125 1 0.78125 0.5 0.78125 0.5 0.78125 1 0.75 1 0.75 0.5 0.75 0.5 0.75 1 0.71875 1 0.71875 0.5 0.71875 0.5 0.71875 1 0.6875 1 0.6875 0.5 0.6875 0.5 0.6875 1 0.65625 1 0.65625 0.5 0.65625 0.5 0.65625 1 0.625 1 0.625 0.5 0.625 0.5 0.625 1 0.59375 1 0.59375 0.5 0.59375 0.5 0.59375 1 0.5625 1 0.5625 0.5 0.5625 0.5 0.5625 1 0.53125 1 0.53125 0.5 0.53125 0.5 0.53125 1 0.5 1 0.5 0.5 0.5 0.5 0.5 1 0.46875 1 0.46875 0.5 0.46875 0.5 0.46875 1 0.4375 1 0.4375 0.5 0.4375 0.5 0.4375 1 0.40625 1 0.40625 0.5 0.40625 0.5 0.40625 1 0.375 1 0.375 0.5 0.375 0.5 0.375 1 0.34375 1 0.34375 0.5 0.34375 0.5 0.34375 1 0.3125 1 0.3125 0.5 0.3125 0.5 0.3125 1 0.28125 1 0.28125 0.5 0.28125 0.5 0.28125 1 0.25 1 0.25 0.5 0.25 0.5 0.25 1 0.21875 1 0.21875 0.5 0.21875 0.5 0.21875 1 0.1875 1 0.1875 0.5 0.1875 0.5 0.1875 1 0.15625 1 0.15625 0.5 0.15625 0.5 0.15625 1 0.125 1 0.125 0.5 0.125 0.5 0.125 1 0.09375 1 0.09375 0.5 0.09375 0.5 0.09375 1 0.0625 1 0.0625 0.5 0.2968217 0.4853885 0.25 0.49 0.2031783 0.4853885 0.158156 0.4717311 0.1166632 0.4495527 0.08029437 0.4197056 0.05044731 0.3833368 0.02826893 0.341844 0.01461156 0.2968217 0.01000001 0.25 0.01461156 0.2031783 0.02826893 0.158156 0.05044731 0.1166632 0.08029437 0.08029437 0.1166632 0.05044731 0.158156 0.02826893 0.2031783 0.01461156 0.25 0.01000001 0.2968217 0.01461156 0.341844 0.02826893 0.3833368 0.05044731 0.4197056 0.08029437 0.4495527 0.1166632 0.4717311 0.158156 0.4853885 0.2031783 0.49 0.25 0.4853885 0.2968217 0.4717311 0.341844 0.4495527 0.3833368 0.4197056 0.4197056 0.3833368 0.4495527 0.341844 0.4717311 0.0625 0.5 0.0625 1 0.03125 1 0.03125 0.5 0.03125 0.5 0.03125 1 0 1 0 0.5 0.75 0.49 0.7968217 0.4853885 0.841844 0.4717311 0.8833368 0.4495527 0.9197056 0.4197056 0.9495527 0.3833368 0.9717311 0.341844 0.9853885 0.2968217 0.99 0.25 0.9853885 0.2031783 0.9717311 0.158156 0.9495527 0.1166632 0.9197056 0.08029437 0.8833368 0.05044731 0.841844 0.02826893 0.7968217 0.01461156 0.75 0.01000001 0.7031783 0.01461156 0.658156 0.02826893 0.6166632 0.05044731 0.5802944 0.08029437 0.5504473 0.1166632 0.5282689 0.158156 0.5146115 0.2031783 0.51 0.25 0.5146115 0.2968217 0.5282689 0.341844 0.5504473 0.3833368 0.5802944 0.4197056 0.6166632 0.4495527 0.658156 0.4717311 0.7031783 0.4853885</float_array>
+          <technique_common>
+            <accessor count="192" source="#IID-_0014-array" stride="2">
+              <param type="float" name="S" />
+              <param type="float" name="T" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="IID-_0012-vertices">
+          <input semantic="POSITION" source="#IID-_0012" />
+        </vertices>
+        <polylist count="34" material="slot000">
+          <input offset="0" semantic="VERTEX" source="#IID-_0012-vertices" />
+          <input offset="0" semantic="NORMAL" source="#IID-_0013" />
+          <input offset="1" semantic="TEXCOORD" source="#IID-_0014" set="0" />
+          <vcount>4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 32 4 4 32</vcount>
+          <p>0 0 1 1 3 2 2 3 2 4 3 5 5 6 4 7 4 8 5 9 7 10 6 11 6 12 7 13 9 14 8 15 8 16 9 17 11 18 10 19 10 20 11 21 13 22 12 23 12 24 13 25 15 26 14 27 14 28 15 29 17 30 16 31 16 32 17 33 19 34 18 35 18 36 19 37 21 38 20 39 20 40 21 41 23 42 22 43 22 44 23 45 25 46 24 47 24 48 25 49 27 50 26 51 26 52 27 53 29 54 28 55 28 56 29 57 31 58 30 59 30 60 31 61 33 62 32 63 32 64 33 65 35 66 34 67 34 68 35 69 37 70 36 71 36 72 37 73 39 74 38 75 38 76 39 77 41 78 40 79 40 80 41 81 43 82 42 83 42 84 43 85 45 86 44 87 44 88 45 89 47 90 46 91 46 92 47 93 49 94 48 95 48 96 49 97 51 98 50 99 50 100 51 101 53 102 52 103 52 104 53 105 55 106 54 107 54 108 55 109 57 110 56 111 56 112 57 113 59 114 58 115 58 116 59 117 61 118 60 119 3 120 1 121 63 122 61 123 59 124 57 125 55 126 53 127 51 128 49 129 47 130 45 131 43 132 41 133 39 134 37 135 35 136 33 137 31 138 29 139 27 140 25 141 23 142 21 143 19 144 17 145 15 146 13 147 11 148 9 149 7 150 5 151 60 152 61 153 63 154 62 155 62 156 63 157 1 158 0 159 0 160 2 161 4 162 6 163 8 164 10 165 12 166 14 167 16 168 18 169 20 170 22 171 24 172 26 173 28 174 30 175 32 176 34 177 36 178 38 179 40 180 42 181 44 182 46 183 48 184 50 185 52 186 54 187 56 188 58 189 60 190 62 191</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="BLENDER028">
+          <layer_names>
+            <name name="UV&#36148;&#22270;" refid="IID-_0014" type="UV" />
+          </layer_names>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="ME-&#31435;&#26041;&#20307;" name="ME-&#31435;&#26041;&#20307;">
+      <mesh>
+        <source id="IID-_0016">
+          <float_array count="24" id="IID-_0016-array">-1 -1 -1 -1 -1 1 -1 1 -1 -1 1 1 1 -1 -1 1 -1 1 1 1 -1 1 1 1</float_array>
+          <technique_common>
+            <accessor count="8" source="#IID-_0016-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0017">
+          <float_array count="24" id="IID-_0017-array">-0.5773503 -0.5773503 -0.5773503 -0.5773503 -0.5773503 0.5773503 -0.5773503 0.5773503 -0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503 -0.5773503 -0.5773503 0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503</float_array>
+          <technique_common>
+            <accessor count="8" source="#IID-_0017-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0018">
+          <float_array count="48" id="IID-_0018-array">0.375 0 0.625 0 0.625 0.25 0.375 0.25 0.375 0.25 0.625 0.25 0.625 0.5 0.375 0.5 0.375 0.5 0.625 0.5 0.625 0.75 0.375 0.75 0.375 0.75 0.625 0.75 0.625 1 0.375 1 0.125 0.5 0.375 0.5 0.375 0.75 0.125 0.75 0.625 0.5 0.875 0.5 0.875 0.75 0.625 0.75</float_array>
+          <technique_common>
+            <accessor count="24" source="#IID-_0018-array" stride="2">
+              <param type="float" name="S" />
+              <param type="float" name="T" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="IID-_0016-vertices">
+          <input semantic="POSITION" source="#IID-_0016" />
+        </vertices>
+        <polylist count="6" material="slot000">
+          <input offset="0" semantic="VERTEX" source="#IID-_0016-vertices" />
+          <input offset="0" semantic="NORMAL" source="#IID-_0017" />
+          <input offset="1" semantic="TEXCOORD" source="#IID-_0018" set="0" />
+          <vcount>4 4 4 4 4 4</vcount>
+          <p>0 0 1 1 3 2 2 3 2 4 3 5 7 6 6 7 6 8 7 9 5 10 4 11 4 12 5 13 1 14 0 15 2 16 6 17 4 18 0 19 7 20 3 21 1 22 5 23</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="BLENDER028">
+          <layer_names>
+            <name name="UV&#36148;&#22270;" refid="IID-_0018" type="UV" />
+          </layer_names>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="ME-&#31435;&#26041;&#20307;.001" name="ME-&#31435;&#26041;&#20307;.001">
+      <mesh>
+        <source id="IID-_0019">
+          <float_array count="24" id="IID-_0019-array">-1 -1 -1 -1 -1 1 -1 1 -1 -1 1 1 1 -1 -1 1 -1 1 1 1 -1 1 1 1</float_array>
+          <technique_common>
+            <accessor count="8" source="#IID-_0019-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0020">
+          <float_array count="24" id="IID-_0020-array">-0.5773503 -0.5773503 -0.5773503 -0.5773503 -0.5773503 0.5773503 -0.5773503 0.5773503 -0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503 -0.5773503 -0.5773503 0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503</float_array>
+          <technique_common>
+            <accessor count="8" source="#IID-_0020-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0021">
+          <float_array count="48" id="IID-_0021-array">0.375 0 0.625 0 0.625 0.25 0.375 0.25 0.375 0.25 0.625 0.25 0.625 0.5 0.375 0.5 0.375 0.5 0.625 0.5 0.625 0.75 0.375 0.75 0.375 0.75 0.625 0.75 0.625 1 0.375 1 0.125 0.5 0.375 0.5 0.375 0.75 0.125 0.75 0.625 0.5 0.875 0.5 0.875 0.75 0.625 0.75</float_array>
+          <technique_common>
+            <accessor count="24" source="#IID-_0021-array" stride="2">
+              <param type="float" name="S" />
+              <param type="float" name="T" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="IID-_0019-vertices">
+          <input semantic="POSITION" source="#IID-_0019" />
+        </vertices>
+        <polylist count="6" material="slot000">
+          <input offset="0" semantic="VERTEX" source="#IID-_0019-vertices" />
+          <input offset="0" semantic="NORMAL" source="#IID-_0020" />
+          <input offset="1" semantic="TEXCOORD" source="#IID-_0021" set="0" />
+          <vcount>4 4 4 4 4 4</vcount>
+          <p>0 0 1 1 3 2 2 3 2 4 3 5 7 6 6 7 6 8 7 9 5 10 4 11 4 12 5 13 1 14 0 15 2 16 6 17 4 18 0 19 7 20 3 21 1 22 5 23</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="BLENDER028">
+          <layer_names>
+            <name name="UV&#36148;&#22270;" refid="IID-_0021" type="UV" />
+          </layer_names>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="ME-&#31435;&#26041;&#20307;.002" name="ME-&#31435;&#26041;&#20307;.002">
+      <mesh>
+        <source id="IID-_0022">
+          <float_array count="24" id="IID-_0022-array">-1 -1 -1 -1 -1 1 -1 1 -1 -1 1 1 1 -1 -1 1 -1 1 1 1 -1 1 1 1</float_array>
+          <technique_common>
+            <accessor count="8" source="#IID-_0022-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0023">
+          <float_array count="24" id="IID-_0023-array">-0.5773503 -0.5773503 -0.5773503 -0.5773503 -0.5773503 0.5773503 -0.5773503 0.5773503 -0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503 -0.5773503 -0.5773503 0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503</float_array>
+          <technique_common>
+            <accessor count="8" source="#IID-_0023-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0024">
+          <float_array count="48" id="IID-_0024-array">0.375 0 0.625 0 0.625 0.25 0.375 0.25 0.375 0.25 0.625 0.25 0.625 0.5 0.375 0.5 0.375 0.5 0.625 0.5 0.625 0.75 0.375 0.75 0.375 0.75 0.625 0.75 0.625 1 0.375 1 0.125 0.5 0.375 0.5 0.375 0.75 0.125 0.75 0.625 0.5 0.875 0.5 0.875 0.75 0.625 0.75</float_array>
+          <technique_common>
+            <accessor count="24" source="#IID-_0024-array" stride="2">
+              <param type="float" name="S" />
+              <param type="float" name="T" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="IID-_0022-vertices">
+          <input semantic="POSITION" source="#IID-_0022" />
+        </vertices>
+        <polylist count="6" material="slot000">
+          <input offset="0" semantic="VERTEX" source="#IID-_0022-vertices" />
+          <input offset="0" semantic="NORMAL" source="#IID-_0023" />
+          <input offset="1" semantic="TEXCOORD" source="#IID-_0024" set="0" />
+          <vcount>4 4 4 4 4 4</vcount>
+          <p>0 0 1 1 3 2 2 3 2 4 3 5 7 6 6 7 6 8 7 9 5 10 4 11 4 12 5 13 1 14 0 15 2 16 6 17 4 18 0 19 7 20 3 21 1 22 5 23</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="BLENDER028">
+          <layer_names>
+            <name name="UV&#36148;&#22270;" refid="IID-_0024" type="UV" />
+          </layer_names>
+        </technique>
+      </extra>
+    </geometry>
+    <geometry id="ME-&#31435;&#26041;&#20307;.003" name="ME-&#31435;&#26041;&#20307;.003">
+      <mesh>
+        <source id="IID-_0025">
+          <float_array count="24" id="IID-_0025-array">-1 -1 -1 -1 -1 1 -1 1 -1 -1 1 1 1 -1 -1 1 -1 1 1 1 -1 1 1 1</float_array>
+          <technique_common>
+            <accessor count="8" source="#IID-_0025-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0026">
+          <float_array count="24" id="IID-_0026-array">-0.5773503 -0.5773503 -0.5773503 -0.5773503 -0.5773503 0.5773503 -0.5773503 0.5773503 -0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503 -0.5773503 -0.5773503 0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503 -0.5773503 0.5773503 0.5773503 0.5773503</float_array>
+          <technique_common>
+            <accessor count="8" source="#IID-_0026-array" stride="3">
+              <param type="float" name="X" />
+              <param type="float" name="Y" />
+              <param type="float" name="Z" />
+            </accessor>
+          </technique_common>
+        </source>
+        <source id="IID-_0027">
+          <float_array count="48" id="IID-_0027-array">0.375 0 0.625 0 0.625 0.25 0.375 0.25 0.375 0.25 0.625 0.25 0.625 0.5 0.375 0.5 0.375 0.5 0.625 0.5 0.625 0.75 0.375 0.75 0.375 0.75 0.625 0.75 0.625 1 0.375 1 0.125 0.5 0.375 0.5 0.375 0.75 0.125 0.75 0.625 0.5 0.875 0.5 0.875 0.75 0.625 0.75</float_array>
+          <technique_common>
+            <accessor count="24" source="#IID-_0027-array" stride="2">
+              <param type="float" name="S" />
+              <param type="float" name="T" />
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="IID-_0025-vertices">
+          <input semantic="POSITION" source="#IID-_0025" />
+        </vertices>
+        <polylist count="6" material="slot000">
+          <input offset="0" semantic="VERTEX" source="#IID-_0025-vertices" />
+          <input offset="0" semantic="NORMAL" source="#IID-_0026" />
+          <input offset="1" semantic="TEXCOORD" source="#IID-_0027" set="0" />
+          <vcount>4 4 4 4 4 4</vcount>
+          <p>0 0 1 1 3 2 2 3 2 4 3 5 7 6 6 7 6 8 7 9 5 10 4 11 4 12 5 13 1 14 0 15 2 16 6 17 4 18 0 19 7 20 3 21 1 22 5 23</p>
+        </polylist>
+      </mesh>
+      <extra>
+        <technique profile="BLENDER028">
+          <layer_names>
+            <name name="UV&#36148;&#22270;" refid="IID-_0027" type="UV" />
+          </layer_names>
+        </technique>
+      </extra>
+    </geometry>
+  </library_geometries>
+  <library_lights>
+    <light id="LA-Light" name="LA-Light">
+      <technique_common>
+        <point>
+          <color>1.0 1.0 1.0 1</color>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="BLENDER028">
+          <power>1000.0</power>
+          <shadow_soft_size>0.10000000149011612</shadow_soft_size>
+        </technique>
+      </extra>
+    </light>
+    <light id="LA-Light.001" name="LA-Light.001">
+      <technique_common>
+        <point>
+          <color>1.0 1.0 1.0 1</color>
+          <constant_attenuation>1.0</constant_attenuation>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="BLENDER028">
+          <power>1000.0</power>
+          <shadow_soft_size>0.10000000149011612</shadow_soft_size>
+        </technique>
+      </extra>
+    </light>
+  </library_lights>
+  <library_materials>
+    <material id="MA-&#26448;&#36136;" name="&#26448;&#36136;">
+      <instance_effect url="#IID-_0007" />
+    </material>
+    <material id="MA-&#26448;&#36136;.002" name="&#26448;&#36136;.002">
+      <instance_effect url="#IID-_0011" />
+    </material>
+    <material id="MA-&#26448;&#36136;.001" name="&#26448;&#36136;.001">
+      <instance_effect url="#IID-_0015" />
+    </material>
+    <material id="MA-&#26448;&#36136;.003" name="&#26448;&#36136;.003">
+      <instance_effect url="#IID-_0028" />
+    </material>
+  </library_materials>
+  <library_visual_scenes>
+    <visual_scene id="SCE-main">
+      <node>
+        <matrix>0.68592066 -0.32401347 0.6515582 7.3588915 0.72767633 0.30542085 -0.6141704 -6.925791 0.0 0.89539564 0.4452714 4.958309 0.0 0.0 0.0 1.0</matrix>
+        <instance_camera url="#CA-Camera" />
+      </node>
+      <node>
+        <matrix>0.68592066 -0.32401347 0.6515582 7.3588915 0.72767633 0.30542088 -0.6141704 -6.925791 -4.0113317e-09 0.89539564 0.4452714 4.958309 0.0 0.0 0.0 1.0</matrix>
+        <instance_camera url="#CA-Camera.001" />
+      </node>
+      <node>
+        <matrix>-0.29086465 -0.7711008 0.5663932 4.0762453 0.95517117 -0.19988336 0.2183912 1.005454 -0.05518906 0.60452473 0.79467225 5.903862 0.0 0.0 0.0 1.0</matrix>
+        <instance_light url="#LA-Light" />
+      </node>
+      <node>
+        <matrix>-0.29086477 -0.77110076 0.5663932 4.0762453 0.9551711 -0.19988342 0.21839128 1.005454 -0.055189084 0.6045247 0.79467225 5.903862 0.0 0.0 0.0 1.0</matrix>
+        <instance_light url="#LA-Light.001" />
+      </node>
+      <node>
+        <matrix>2.0 0.0 0.0 2.0 0.0 2.0 0.0 2.0 0.0 0.0 1.0 0.0 0.0 0.0 0.0 1.0</matrix>
+        <instance_geometry url="#ME-&#24179;&#38754;">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="slot000" target="#MA-&#26448;&#36136;">
+                <bind_vertex_input semantic="ACTIVE_UV" input_semantic="TEXCOORD" input_set="0" />
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node>
+        <matrix>1.0 0.0 0.0 1.35 0.0 1.0 0.0 1.9 0.0 0.0 1.0 1.0 0.0 0.0 0.0 1.0</matrix>
+        <instance_geometry url="#ME-&#26609;&#20307;">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="slot000" target="#MA-&#26448;&#36136;.002">
+                <bind_vertex_input semantic="ACTIVE_UV" input_semantic="TEXCOORD" input_set="0" />
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node>
+        <matrix>1.0 0.0 0.0 2.75 0.0 1.0 0.0 1.9 0.0 0.0 1.0 1.0 0.0 0.0 0.0 1.0</matrix>
+        <instance_geometry url="#ME-&#26609;&#20307;.001">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="slot000" target="#MA-&#26448;&#36136;.001">
+                <bind_vertex_input semantic="ACTIVE_UV" input_semantic="TEXCOORD" input_set="0" />
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+      <node>
+        <matrix>6.417322e-08 -0.05 0.0 1.35 0.85 3.774895e-09 0.0 3.15 0.0 0.0 1.0 1.0 0.0 0.0 0.0 1.0</matrix>
+        <instance_geometry url="#ME-&#31435;&#26041;&#20307;" />
+      </node>
+      <node>
+        <matrix>0.56568545 -0.03535534 0.0 3.4005852 0.56568545 0.03535534 0.0 3.4133775 0.0 0.0 1.0 1.0 0.0 0.0 0.0 1.0</matrix>
+        <instance_geometry url="#ME-&#31435;&#26041;&#20307;.001" />
+      </node>
+      <node>
+        <matrix>1.8874475e-08 -0.05 0.0 1.35 0.25 3.774895e-09 0.0 0.25 0.0 0.0 1.0 1.0 0.0 0.0 0.0 1.0</matrix>
+        <instance_geometry url="#ME-&#31435;&#26041;&#20307;.002" />
+      </node>
+      <node>
+        <matrix>1.8874475e-08 -0.05 0.0 2.75 0.25 3.774895e-09 0.0 0.25 0.0 0.0 1.0 1.0 0.0 0.0 0.0 1.0</matrix>
+        <instance_geometry url="#ME-&#31435;&#26041;&#20307;.003">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="slot000" target="#MA-&#26448;&#36136;.003">
+                <bind_vertex_input semantic="ACTIVE_UV" input_semantic="TEXCOORD" input_set="0" />
+              </instance_material>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
+      </node>
+    </visual_scene>
+  </library_visual_scenes>
+  <scene>
+    <instance_visual_scene url="#SCE-main" />
+  </scene>
+  <extra>
+    <technique profile="BLENDER028">
+      <id_prefixes>
+        <prefix name="CAMERA" value="CA-" />
+        <prefix name="EMPTY" value="EM-" />
+        <prefix name="LAMP" value="LA-" />
+        <prefix name="MATERIAL" value="MA-" />
+        <prefix name="MESH" value="ME-" />
+        <prefix name="SCENE" value="SCE-" />
+      </id_prefixes>
+    </technique>
+  </extra>
+</COLLADA>
