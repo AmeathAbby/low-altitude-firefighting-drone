@@ -1,0 +1,407 @@
+% ============================================================
+% 第 2 章 技术栈 —— 约束映射、分层架构与核心模块选型
+% ============================================================
+
+\section{技术栈}\label{sec:tech_stack}
+
+技术栈的确定，本质上是把赛项规则与任务需求翻译为可度量的技术指标，再据此选择算法、组件与运行平台。本章首先给出赛项约束到设计指标的映射，随后从分层视图与数据流两个角度描述系统总体架构，最后逐模块说明选型依据、关键机制、接口形式与资源预算，并给出与备选方案的对比。
+
+\subsection{赛项约束与需求映射}
+
+\subsubsection{场地与任务要素}
+
+赛项场地被控制在 $4000\times4000\times3000\unit{mm}$ 范围内，四周由安全网包围，地面为哑光白色。场地要素及其对技术栈的直接约束如表~\ref{tab:field_constraints} 所示。其中随机障碍与任务区目标的位置均由现场抽签决定，这是系统必须在线建图、在线识别而不能依赖先验地图的根本原因。
+
+\begin{table}[H]
+\centering
+\caption{场地与任务要素对技术栈的约束}
+\label{tab:field_constraints}
+\small
+\begin{tabular}{L{2.4cm}L{4.9cm}L{6.8cm}}
+\toprule
+\textbf{要素} & \textbf{命题规格} & \textbf{对技术栈的约束} \\
+\midrule
+运行场地 & $4000\times4000\times3000\unit{mm}$ & 场地尺度小，$7\unit{m}$ 级局部地图即可覆盖；可用飞行高度约 $2.5\unit{m}$，竖直方向机动余量有限 \\
+起飞/降落区 & 圆形，$\Phi500\unit{mm}$ & 起降水平定位误差需控制在 $0.1\unit{m}$ 以内，垂直起降轨迹需平缓无超调 \\
+固定障碍 & $1700\times2000\times100$、$1600\times2000\times100$、$2\times500\times2000\times100\unit{mm}$ & 硬质薄板，单面观测时点云稀疏，需依赖膨胀栅格与安全间隙保证通行安全 \\
+随机障碍 & 2 根 $\Phi200\times2000\unit{mm}$ 圆柱，单侧通行距离 $\geq1300\unit{mm}$ & 位置抽签确定，必须在线感知；细柱直径小，对点云密度与栅格分辨率提出要求 \\
+危险品任务区 & 2 个 $400\times400\unit{mm}$ 区域 & 悬停 $1.5$--$2.0\unit{m}$ 时警告标志成像尺寸仅数十像素，属小目标检测 \\
+人员救助任务区 & 3 个候选位置，$400\times400\unit{mm}$ & 目标位置不确定，需在任务区上方逐点搜索并稳定悬停 \\
+投放物资 & 单件 $\leq80\unit{mm}$ 立方，消防与救援各一件 & 需要双仓独立投放机构，投放动作对质心与姿态的扰动可控 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{规则条款到技术指标的映射}
+
+赛项对功能、电控、尺寸与运行方式提出了明确条款，表~\ref{tab:rule_mapping} 将其逐条映射为具体的技术实现与可验证的设计指标。其中“不得使用 UWB、动作捕捉等外置辅助定位装置”是本系统采用激光-惯性 SLAM 的直接依据；“开源飞控且支持二次开发”则为机外几何控制器接入 PX4 提供了合法性基础。
+
+\begin{table}[H]
+\centering
+\caption{赛项规则条款与技术实现映射}
+\label{tab:rule_mapping}
+\small
+\begin{tabular}{L{3.8cm}L{5.4cm}L{4.9cm}}
+\toprule
+\textbf{规则要求} & \textbf{技术实现} & \textbf{设计指标} \\
+\midrule
+禁止 UWB、动捕等外置定位 & FAST-LIO2 激光-惯性里程计 & 校正频率 $10\unit{Hz}$，输出 $200\unit{Hz}$，航程漂移 $\leq1\%$ \\
+开源飞控并支持二次开发 & PX4 固件 + MAVLink 机外控制 & 姿态/推力指令 $100\unit{Hz}$ \\
+自主与手动模式可切换 & 遥控器三段开关映射 PX4 飞行模式，机外节点监听模式反馈并退出控制 & 切换响应 $\leq0.2\unit{s}$ \\
+飞行状态实时回传 & MAVROS 遥测 + 图传 OSD 叠加 & 遥测 $\geq10\unit{Hz}$，图传 $1080\unit{p}@30\unit{fps}$ \\
+目标自主识别与标注 & YOLO26 检测 + 标注渲染节点 & 推理 $\geq20\unit{fps}$，红/蓝框标注延时 $\leq100\unit{ms}$ \\
+笔记本电脑一键启动 & 单一 launch 脚本 + 上电自检 & 上电至可起飞 $\leq60\unit{s}$ \\
+单电池、10 分钟含调试 & 算力裁剪与功耗预算 & 机载计算功耗 $\leq25\unit{W}$，任务飞行 $\leq5\unit{min}$ \\
+全程录屏 & 机载录屏 + 地面站录屏 & $1080\unit{p}$，含程序运行画面 \\
+轴距 $300$--$500\unit{mm}$ & X 型机架，轴距 $450\unit{mm}$ & 满足规则区间并留出载荷与云台空间 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{技术栈总体视图}
+
+系统技术栈按“平台层—中间件层—算法层—任务层”四层组织。平台层提供机体、动力、传感器与算力；中间件层负责设备驱动、进程通信与推理运行时；算法层由状态估计、规划、控制与视觉识别四个核心模块构成；任务层负责将赛项流程分解为状态机动作，并完成标注、回传与录屏。各层的组成与选型见表~\ref{tab:stack}，分层结构见图~\ref{fig:stack_layers}。
+
+\begin{table}[H]
+\centering
+\caption{系统技术栈分层与选型}
+\label{tab:stack}
+\footnotesize
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{L{1.5cm}L{2.3cm}L{4.7cm}L{5.2cm}}
+\toprule
+\textbf{层次} & \textbf{组件} & \textbf{选型} & \textbf{说明} \\
+\midrule
+\multirow{6}{*}{平台层}
+ & 机架 & X 型碳纤维机架，轴距 $450\unit{mm}$ & 满足 $300$--$500\unit{mm}$ 规则要求 \\
+ & 动力 & F100 KV1100 电机、银燕 45A 电调 & 推重比 $\geq2.5$，支持载荷与机动 \\
+ & 飞控 & Pixhawk 6C mini，PX4 开源固件 & 姿态环、混控与 offboard 接口 \\
+ & 机载计算 & Jetson Orin NX 16GB & 8 核 Cortex-A78AE，1024 CUDA 核，$100\unit{TOPS}$（INT8） \\
+ & 传感器 & Livox Mid-360、下视广角相机 & $360^\circ\times59^\circ$ 点云；$1080\unit{p}@30\unit{fps}$ 图像 \\
+ & 执行机构 & 双仓舵机拨杆投放机构 & 消防物资与救援物资独立投放 \\
+\midrule
+\multirow{4}{*}{中间件层}
+ & 操作系统 & Ubuntu 20.04 + JetPack 5.1 & 实时性与驱动生态平衡 \\
+ & 通信中间件 & ROS Noetic、MAVROS、MAVLink 2.0 & 模块解耦，便于分模块调试 \\
+ & 推理运行时 & TensorRT 8.x（FP16） & 端到端模型直接部署，无需 NMS 插件 \\
+ & 设备驱动 & Livox SDK2、UVC 相机驱动 & 统一时间戳与坐标约定 \\
+\midrule
+\multirow{4}{*}{算法层}
+ & 视觉识别 & YOLO26 & 端到端无 NMS，小目标友好 \\
+ & 状态估计 & FAST-LIO2 & 紧耦合 IEKF，$200\unit{Hz}$ 位姿输出 \\
+ & 规划避障 & Diff-Planner & 概率栅格 + A* + MINCO 优化 \\
+ & 飞行控制 & PX4Ctrl & $SO(3)$ 几何控制 + RLS 油门辨识 \\
+\midrule
+任务层 & 任务调度 & 有限状态机 + 地面站 & 任务阶段切换、标注、回传、录屏 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\resizebox{0.97\textwidth}{!}{%
+\begin{tikzpicture}[
+    font=\small,
+    lane/.style={rounded corners=4pt, draw=black!22, line width=0.5pt},
+    box/.style={rectangle, rounded corners=2.5pt, draw=black!55, fill=white, align=center,
+        font=\scriptsize, minimum height=0.98cm, inner sep=3pt},
+    app/.style={box, draw=Purple!70!black, fill=Purple!8},
+    alg/.style={box, draw=ForestGreen!70!black, fill=ForestGreen!8},
+    mid/.style={box, draw=BurntOrange!85!black, fill=BurntOrange!9},
+    hw/.style={box, draw=black!45, fill=black!4},
+]
+% ---- 层背景 ----
+\filldraw[lane, fill=Purple!3] (1.75,5.15) rectangle (15.05,6.55);
+\filldraw[lane, fill=ForestGreen!3] (1.75,3.45) rectangle (15.05,4.85);
+\filldraw[lane, fill=BurntOrange!3] (1.75,1.75) rectangle (15.05,3.15);
+\filldraw[lane, fill=black!2] (1.75,0.05) rectangle (15.05,1.45);
+
+\node[anchor=east, font=\small\bfseries] at (1.62,5.85) {任务层};
+\node[anchor=east, font=\small\bfseries] at (1.62,4.15) {算法层};
+\node[anchor=east, font=\small\bfseries] at (1.62,2.45) {中间件层};
+\node[anchor=east, font=\small\bfseries] at (1.62,0.75) {平台层};
+
+% ---- 任务层 ----
+\node [app, minimum width=3.0cm] at (3.25,5.85) {任务状态机\\阶段切换与仲裁};
+\node [app, minimum width=3.0cm] at (6.65,5.85) {目标定位与对准\\像素—世界投影};
+\node [app, minimum width=3.0cm] at (10.05,5.85) {标注与图传\\红/蓝框 OSD};
+\node [app, minimum width=3.0cm] at (13.45,5.85) {录屏与监控\\机载 + 地面站};
+
+% ---- 算法层 ----
+\node [alg, minimum width=3.0cm] at (3.25,4.15) {FAST-LIO2\\激光-惯性里程计};
+\node [alg, minimum width=3.0cm] at (6.65,4.15) {Diff-Planner\\建图·搜索·优化};
+\node [alg, minimum width=3.0cm] at (10.05,4.15) {PX4Ctrl\\几何姿态 + 推力};
+\node [alg, minimum width=3.0cm] at (13.45,4.15) {YOLO26\\目标检测与分类};
+
+% ---- 中间件层 ----
+\node [mid, minimum width=2.4cm] at (2.95,2.45) {Ubuntu 20.04\\JetPack 5.1};
+\node [mid, minimum width=2.4cm] at (5.65,2.45) {ROS Noetic\\话题·服务};
+\node [mid, minimum width=2.4cm] at (8.35,2.45) {MAVROS\\MAVLink 2.0};
+\node [mid, minimum width=2.4cm] at (11.05,2.45) {TensorRT 8.x\\FP16 推理};
+\node [mid, minimum width=2.4cm] at (13.75,2.45) {Livox SDK2\\UVC 驱动};
+
+% ---- 平台层 ----
+\node [hw, minimum width=1.95cm] at (2.725,0.75) {Jetson\\Orin NX 16GB};
+\node [hw, minimum width=1.95cm] at (4.925,0.75) {Pixhawk\\6C mini};
+\node [hw, minimum width=1.95cm] at (7.125,0.75) {Livox Mid-360\\$10\unit{Hz}$ 点云};
+\node [hw, minimum width=1.95cm] at (9.325,0.75) {下视相机\\$1080\unit{p}$};
+\node [hw, minimum width=1.95cm] at (11.525,0.75) {投放机构\\双仓舵机};
+\node [hw, minimum width=1.95cm] at (13.725,0.75) {F100 电机\\银燕 45A 电调};
+
+% ---- 层间连接 ----
+\foreach \x in {3.25,6.65,10.05,13.45} {
+    \draw[{Stealth[length=2mm,width=1.4mm]}-{Stealth[length=2mm,width=1.4mm]}, draw=black!45, line width=0.5pt]
+        (\x,4.68) -- (\x,5.12);
+}
+\end{tikzpicture}
+}
+\caption{系统技术栈分层结构}
+\label{fig:stack_layers}
+\end{figure}
+
+\subsection{系统数据流与闭环}
+
+图~\ref{fig:dataflow} 给出系统的主要数据通路。状态估计、规划与控制构成 $200\unit{Hz}$--$10\unit{Hz}$--$100\unit{Hz}$ 的双频内环：FAST-LIO2 在每帧激光到达时完成一次迭代校正，并以 IMU 中值积分在两帧之间持续前向传播，向控制器提供 $200\unit{Hz}$ 的位姿与速度；Diff-Planner 以 $10\unit{Hz}$ 更新占据栅格、搜索引导路径并优化出平坦轨迹；PX4Ctrl 在 $100\unit{Hz}$ 上跟踪轨迹并向 PX4 发送姿态四元数与归一化推力。视觉支路则以 $30\unit{Hz}$ 独立运行，检测结果不进入内环，而是作为任务层的决策输入，通过修改目标点、触发悬停或投放来影响外环。
+
+该结构使视觉推理的抖动不污染控制周期，控制器始终获得连续可微的平坦参考；视觉模块也可按需降帧，把算力让给建图与规划。
+
+\begin{figure}[H]
+\centering
+\resizebox{0.86\textwidth}{!}{%
+\begin{tikzpicture}[
+    font=\small,
+    node distance=1.35cm and 1.55cm,
+    module/.style={rectangle, draw=NavyBlue!80!black, fill=NavyBlue!6, rounded corners=3pt,
+        minimum width=3.3cm, minimum height=1.05cm, align=center, line width=0.65pt},
+    planner/.style={module, draw=BurntOrange!85!black, fill=BurntOrange!9},
+    controller/.style={module, draw=RoyalBlue!80!black, fill=RoyalBlue!8},
+    vision/.style={module, draw=ForestGreen!70!black, fill=ForestGreen!8},
+    task/.style={module, draw=Purple!70!black, fill=Purple!8},
+    plant/.style={module, draw=black!55, fill=black!5, minimum width=3.45cm, minimum height=1.15cm},
+    sensor/.style={rectangle, draw=ForestGreen!70!black, fill=ForestGreen!8, rounded corners=3pt,
+        minimum width=2.15cm, minimum height=0.72cm, align=center, font=\footnotesize, line width=0.55pt},
+    arrow/.style={-{Stealth[length=2.4mm,width=1.7mm]}, line width=0.7pt, draw=black},
+    data/.style={font=\scriptsize, align=center, fill=none, inner sep=1.4pt, text=black!82},
+]
+
+\node [module] (lio) at (0, -1.05) {FAST-LIO2\\激光-惯性里程计};
+\node [planner] (planner) at (0, -3.05) {Diff-Planner\\建图 + 搜索 + 优化};
+\node [controller] (ctrl) at (0, -5.05) {PX4Ctrl\\几何姿态 + 推力映射};
+\node [plant] (quad) at (0, -7.05) {四旋翼无人机系统};
+
+\node [sensor] (cam) at (6.3, -1.15) {下视相机\\$1080\unit{p}@30\unit{fps}$};
+\node [vision] (yolo) at (6.3, -3.05) {YOLO26\\检测与分类};
+\node [task] (sm) at (6.3, -5.05) {任务状态机\\阶段决策};
+
+\node [sensor] (drop) at (4.6, -7.5) {投放机构\\双仓舵机};
+\node [sensor, minimum width=2.55cm] (link) at (9.25, -7.35) {图传与地面站\\标注画面·遥测};
+
+\node [sensor] (lidar) at (-1.45, -9.3) {Mid-360 雷达\\点云 $10\unit{Hz}$};
+\node [sensor] (imu) at (1.45, -9.3) {飞控 IMU\\加速度/角速度 $200\unit{Hz}$};
+
+\draw [rounded corners=5pt, draw=black, line width=0.55pt]
+    ($(lidar.north west)+(-0.22,0.23)$) rectangle ($(imu.south east)+(0.22,-0.23)$);
+
+\draw [arrow] (lio.south) -- node [data, right] {降采样点云 \\ 里程计} (planner.north);
+\draw [arrow] (planner.south) -- node [data, right] {平坦轨迹\\$p,v,a,\psi$} (ctrl.north);
+\draw [arrow] (ctrl.south) -- node [data, right] {姿态 $q_{\text{cmd}}$\\推力 $T_{\text{cmd}}$} (quad.north);
+
+\draw [arrow] (lidar.north) -- ++(0,0.45) -- ++(-2.25,0) |- node [data, pos=0.22, right] {原始点云} (lio.west);
+\draw [arrow] (imu.north) -- ++(0,0.45) -- ++(1.55,0) |- (lio.east);
+\node [data] at (2.4,-8.12) {惯性测量};
+\draw [arrow] (quad.south) -- node [data, right] {搭载} ($(lidar.north)!0.5!(imu.north)+(0,0.2)$);
+
+\draw [arrow] (cam.south) -- node [data, right] {图像} (yolo.north);
+\draw [arrow] (yolo.south) -- node [data, right] {框·类别·置信度} (sm.north);
+\draw [arrow] (sm.west) -- node [data, below] {目标点} (3.3,-5.05) -- (3.3,-3.05) -- (planner.east);
+\draw [arrow] (sm.south) -- (6.3,-6.6) -| node [data, pos=0.22, above] {投放指令} (drop.north);
+\draw [arrow] (sm.east) -- node [data, above] {标注画面} (9.25,-5.05) -- (link.north);
+
+\end{tikzpicture}
+}
+\caption{系统数据流与闭环结构}
+\label{fig:dataflow}
+\end{figure}
+
+模块之间以 ROS 话题解耦，各模块的接口定义、时间同步与坐标约定统一在第~\ref{sec:iface}~节给出，此处不再展开。
+
+\subsection{视觉感知：YOLO26}
+
+\subsubsection{识别任务}
+
+视觉模块承担三项任务：在危险品任务区上方识别两个 $400\times400\unit{mm}$ 区域内的警告标志，判断哪一个是正确的危险品（易燃、易爆、有毒有害），哪一个是干扰项，并在回传画面中以红色框标注正确目标；在人员救助任务区识别受伤人员头部图像并以蓝色框标注；将目标的像素位置转换为世界坐标，为悬停对准与投放提供位置基准。识别的准确性直接决定投放是否命中正确任务区，是任务层决策的唯一视觉依据。
+
+\subsubsection{选型依据}
+
+系统选用 YOLO26~\cite{jocher2026yolo26} 作为检测模型，主要基于以下四点考虑。
+
+\textbf{（1）端到端无 NMS 的推理链路。}YOLO26 采用双头结构：一对多检测头沿用传统 YOLO 输出并依赖 NMS 后处理，一对一检测头则通过可学习查询与一对一匹配训练，直接输出固定数量的最终检测结果。导出与部署时选择一对一检测头（\texttt{nms=False}），模型输出即为最终检测集合，无需在 TensorRT 中额外实现 NMS 插件，也无需为不同硬件分别调校置信度与 IoU 阈值。对于必须在现场快速复现、不允许临时改动参数的比赛场景，这一特性显著降低了部署风险。
+
+\textbf{（2）去除 DFL 后的轻量回归头。}YOLO26 移除了分布式焦点损失（DFL），将边界框回归改为直接回归，减小了检测头的计算量与导出复杂度，同时保留了不受分布离散化限制的回归范围。在 Jetson Orin NX 这类共享算力的边缘平台上，检测头开销的降低可直接转化为帧率或留给其他模块的算力余量。
+
+\textbf{（3）面向小目标的训练配方。}YOLO26 引入渐进式损失（Progressive Loss）与小目标感知标签分配（STAL），前者把训练重心逐步移向推理时实际使用的一对一检测头，后者改善小目标的正样本覆盖率。本赛项的目标在悬停高度下成像尺寸小、数量少，正是 STAL 设计所针对的场景。
+
+\textbf{（4）官方基准与尺度可选性。}YOLO26 提供 n/s/m/l/x 五个尺度，COCO 检测精度为 $40.9$--$57.5\unit{mAP}$，T4 TensorRT 延迟为 $1.7$--$11.8\unit{ms}$，官方还报告 YOLO26n 的 CPU ONNX 推理较 YOLO11n 提速约 $43\%$。本系统按“精度优先、算力可行”的原则在 s 与 m 尺度之间选择，具体尺度由实测帧率与召回率共同确定。
+
+\begin{techbox}[端到端无 NMS 的机载视觉链路]
+相机采集 $1080\unit{p}$ 图像 $\rightarrow$ CUDA 预处理与缩放至 $640\times640$ $\rightarrow$ TensorRT FP16 引擎推理（一对一检测头）$\rightarrow$ 直接输出至多 300 个最终检测结果（重复框已在训练的一对一匹配中消除，推理阶段无需 NMS）$\rightarrow$ 按置信度过滤 $\rightarrow$ 发布检测话题。
+\end{techbox}
+
+\subsubsection{类别设计与训练策略}
+
+检测类别按“标志语义 + 人员目标”设计为五类：易燃、易爆、有毒有害、干扰标志、人员头部。前四类同属黄色三角形警告标志，类间差异主要体现在内部图案，属于典型的细粒度分类问题；第五类为人员头部图像，形态与尺度均与前三类不同。数据来源以场地实拍为主，在 $1.2$--$2.2\unit{m}$ 多个高度、多个水平位置、不同光照与不同背景干扰下采集样本，并对标志图像做透视变换、亮度扰动与运动模糊增强，以覆盖俯视成像与飞行抖动带来的形变。
+
+训练采用 COCO 预训练权重迁移学习，输入分辨率取 $640\times640$，优化器使用 YOLO26 默认的 MuSGD 组合，损失采用渐进式策略。评价指标除整体 $\unit{mAP}_{50}$ 外，单独统计小目标子集的召回率，因为漏检一个正确危险品会导致投放任务直接失败，而误检一个干扰项只会造成标注错误。两者在任务代价上并不对等，因此召回率优先于精确率。
+
+\subsubsection{机载部署与目标定位}
+
+模型以 PyTorch 训练完成后导出为 ONNX（固定输入尺寸与动态 batch 关闭），再由 TensorRT 生成 FP16 引擎并在机载端加载。图像预处理（去畸变、缩放、归一化）在 GPU 上以核函数完成，避免主机内存与显存之间的多次拷贝。检测结果以自定义消息发布，包含类别、置信度、边界框与时间戳。
+
+目标的世界坐标由像素坐标反投影得到。设相机内参矩阵为 $\Kcal$，相机在世界系下的位姿为 $(\Rmat_{wc},\mathbf{t}_{wc})$，目标所在平面高度为 $z_g$（由任务区地面高度给定），则像素 $[u,v]^\top$ 对应的世界坐标为
+\begin{equation}
+\lambda = \frac{z_g - t_{wc,z}}{\mathbf{e}_3^\top \Rmat_{wc}\Kcal^{-1}[u,v,1]^\top},\qquad
+\pvec_w = \Rmat_{wc}\,\Kcal^{-1}[u,v,1]^\top \lambda + \mathbf{t}_{wc}
+\label{eq:pixel2world}
+\end{equation}
+其中 $\lambda$ 为沿相机射线的尺度因子。由于相机随飞行器姿态变化，$\Rmat_{wc}$ 由 FAST-LIO2 输出的位姿与相机-IMU 外参复合得到，因此姿态估计的精度会直接传递到目标定位精度上。悬停对准阶段以式~(\ref{eq:pixel2world}) 给出的目标位置与期望悬停点之差作为位置指令，同时以目标在图像中的像素偏差作为慢速视觉伺服修正量，两者叠加后送入规划器，形成“粗对准 + 精对准”的两级收敛。
+
+\subsection{状态估计：FAST-LIO2}
+
+状态估计模块负责在无卫星导航、无外置定位的条件下提供飞行器六自由度位姿，并同时输出世界系点云供规划模块构建占据栅格。系统选用 FAST-LIO2~\cite{xu2022fastlio2}，其核心是将激光点到平面的残差直接与 IMU 预积分结果在迭代扩展卡尔曼滤波框架内紧耦合，借助增量式 kd-Tree（ikd-Tree）~\cite{cai2021ikdtree} 维护地图，无需提取角点、面点等人工特征。
+
+选择该方案的原因有三点。第一，场地地面为哑光白色、障碍为纯色挡板，视觉特征稀少且光照条件随现场布光变化，视觉惯性里程计在该场景下容易退化；激光不依赖纹理与光照，对白色挡板与细圆柱同样有效。第二，Mid-360 为非重复扫描激光雷达，FAST-LIO2 直接对原始点云做点到面配准，不要求固定的扫描线结构，适配性优于依赖线束特征的 LOAM 类方法。第三，算法在单帧 $10\unit{Hz}$ 的输入下即可在机载 CPU 上实时运行，算力占用远低于需要 GPU 的稠密建图方案，可为视觉推理留出算力。
+
+针对本系统，FAST-LIO2 做了两项工程化改造。其一，外参由 LI-Init~\cite{zhu2022liinit} 离线标定后固定，不参与在线估计，避免飞行中外参漂移导致的轨迹跳变；其二，在原始算法仅以 $10\unit{Hz}$ 输出位姿的基础上，利用 IMU 中值积分在两帧激光之间持续前向传播，以 $200\unit{Hz}$ 向控制器输出里程计，使控制内环获得与 IMU 同频的高带宽反馈。该设计的具体推导将在状态估计章节展开。
+
+\begin{techbox}[双频状态估计]
+$10\unit{Hz}$ 激光帧到达时执行 IEKF 迭代校正，修正累积漂移；两帧之间以 $200\unit{Hz}$ 的 IMU 中值积分前向传播位姿、速度与姿态。校正频率决定长期精度，传播频率决定控制带宽，两者分离使系统在 $1\unit{m/s}$ 量级机动下仍能保持厘米级跟踪。
+\end{techbox}
+
+\subsection{规划与避障：Diff-Planner}
+
+规划模块接收世界系点云、当前位姿与任务层下发的目标点，输出一条满足动力学约束的无碰撞平坦轨迹。系统采用 Diff-Planner，其结构由三个子模块串联而成：基于射线投射（Raycast）的概率占据栅格建图、基于 A* 的引导路径搜索、基于 MINCO 多项式参数化与 L-BFGS 求解的轨迹优化。该框架源自 EGO-Planner~\cite{zhou2021egoplanner} 与 GCOPTER~\cite{wang2022gcopter}，并针对 Mid-360 的非重复扫描特性与室内小尺度场景做了适配。
+
+在栅格建图层，每个体素以 Log-Odds 形式维护占据概率，激光命中的终末栅格增加占据概率，射线穿过的中间栅格降低占据概率，概率被箝位在上下界内以防止饱和。对 Mid-360 点云在进入栅格前做隔点降采样，以均衡非重复扫描带来的视场中心点密度过高问题；对距机体 $0.3\unit{m}$ 以内的近场点做盲区过滤，消除机身与桨叶的无效回波。占据栅格进一步按膨胀半径统计邻域占据计数，形成稠密距离场，供优化阶段查询障碍物距离。
+
+在路径搜索层，A* 在 26 邻域内以欧氏距离为代价、以对角线距离为启发式，在 $0.2\unit{s}$ 的时间预算内生成从当前位置到目标点的无碰撞引导序列；当起点或终点落入占据栅格时，沿连线方向外推至最近空闲栅格，避免因目标点被障碍物膨胀覆盖而规划失败。
+
+在轨迹优化层，轨迹被参数化为 $N$ 段五次多项式（最小 jerk），优化变量为中间路径点与各段时长，目标函数包含 jerk 积分、总时长、相邻段形状方差、障碍物软硬约束罚项以及速度/加速度/jerk 可行性罚项，全部以软约束形式并入无约束非线性规划，由 L-BFGS 借助解析梯度求解。优化输出位置、速度、加速度与 jerk 的解析表达式，直接作为控制器的前馈参考。
+
+面向本赛项，规划器的关键参数按场地尺度设定：栅格分辨率 $0.06\unit{m}$，障碍物膨胀半径 $0.24\unit{m}$，局部地图范围 $7.0\times7.0\times2.0\unit{m}$，单次规划视界 $3.8\unit{m}$，最大速度 $1.5\unit{m/s}$、最大加速度 $2.8\unit{m/s}^2$、最大 jerk $5.0\unit{m/s}^3$。膨胀半径与规则保证的 $1300\unit{mm}$ 通行宽度相比留有约 $800\unit{mm}$ 的净空，足以容纳定位误差与轨迹跟踪误差。
+
+\subsection{飞行控制：PX4Ctrl}
+
+控制模块以 $100\unit{Hz}$ 接收平坦轨迹参考与 $200\unit{Hz}$ 里程计，解算期望姿态四元数与归一化推力，经 MAVLink 发送至 PX4 飞控；PX4 负责姿态与角速率闭环、混控以及电调输出。系统采用 PX4Ctrl，其核心是利用四旋翼的微分平坦特性，在 $SO(3)$ 上直接由期望加速度构造完整期望姿态，而不是像原版 px4ctrl 那样在悬停平衡态附近做小角度线性化。
+
+具体而言，期望加速度 $\mathbf{a}_{\text{des}}$ 由位置误差经偏航解耦增益变换得到的速度修正、速度误差反馈、规划器前馈加速度与重力补偿叠加而成；期望机体 $z$ 轴由 $\mathbf{a}_{\text{des}}$ 的单位向量唯一确定，配合期望偏航角经叉积构造正交的期望旋转矩阵
+\begin{equation}
+\mathbf{z}_b^d = \frac{\mathbf{a}_{\text{des}}}{\|\mathbf{a}_{\text{des}}\|},\qquad
+\mathbf{x}_b^d = \frac{\mathbf{y}_c\times\mathbf{z}_b^d}{\|\mathbf{y}_c\times\mathbf{z}_b^d\|},\qquad
+\mathbf{y}_b^d = \mathbf{z}_b^d\times\mathbf{x}_b^d
+\end{equation}
+其中 $\mathbf{y}_c=[-\sin\psi_d,\cos\psi_d,0]^\top$ 为期望偏航方向对应的水平参考向量。叉积方向存在符号歧义，控制器同时构造 $\mathbf{x},\mathbf{y}$ 轴反向的备选解，取与当前姿态测地距离较小者，避免姿态指令的大角度跳变。推力指令由 $\mathbf{a}_{\text{des}}$ 在当前机体 $z$ 轴上的投影除以油门-加速度映射系数得到，该系数由带遗忘因子的递推最小二乘在线辨识，以适应电池电压下降与载荷变化。
+
+相较原版，本控制器增加了三项安全处理：期望加速度竖直分量限制在 $[0.1g,\,2.0g]$，防止推力指令超出执行器能力；水平与竖直加速度比超过 $\tan50^\circ$ 时触发倾角保护；姿态解算中的双解择优抑制了指令跳变。这些处理在狭窄通道内尤为必要，因为一次姿态指令跳变就可能导致飞行器撞向障碍。
+
+\subsection{任务调度与系统集成}
+
+\subsubsection{模块接口与数据约定}\label{sec:iface}
+
+系统各模块以 ROS 话题解耦，接口清单如表~\ref{tab:topics} 所示。所有消息统一使用 ROS 时间戳：相机与 IMU 由主机时间做软同步，Mid-360 与飞控 IMU 之间的固定时间偏移由 LI-Init 离线标定为 $-9.45\unit{ms}$，在驱动层直接补偿。坐标约定方面，世界系取 $z$ 轴向上，机体系取前—右—下（FRD），里程计以 IMU 为参考基座；与 PX4 的 NED 约定之间的转换在 MAVROS 层完成，算法层不直接处理该转换，避免坐标系混用引入符号错误。
+
+\begin{table}[H]
+\centering
+\caption{模块间主要接口清单}
+\label{tab:topics}
+\footnotesize
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{L{4.6cm}L{4.2cm}L{3.4cm}L{1.5cm}}
+\toprule
+\textbf{话题/接口} & \textbf{消息类型} & \textbf{方向} & \textbf{频率} \\
+\midrule
+\path{/livox/lidar} & \path{livox_ros_driver2/CustomMsg} & 雷达 $\rightarrow$ 状态估计 & $10\unit{Hz}$ \\
+\path{/mavros/imu/data_raw} & \path{sensor_msgs/Imu} & 飞控 $\rightarrow$ 状态估计 & $200\unit{Hz}$ \\
+\path{/Odometry} & \path{nav_msgs/Odometry} & 状态估计 $\rightarrow$ 规划/控制 & $200\unit{Hz}$ \\
+\path{/cloud_registered} & \path{sensor_msgs/PointCloud2} & 状态估计 $\rightarrow$ 规划 & $10\unit{Hz}$ \\
+\path{/camera/image_raw} & \path{sensor_msgs/Image} & 相机 $\rightarrow$ 视觉 & $30\unit{Hz}$ \\
+\path{/perception/detections} & \path{DetectionArray}（自定义） & 视觉 $\rightarrow$ 任务 & $30\unit{Hz}$ \\
+\path{/planning/trajectory} & \path{Trajectory}（自定义） & 规划 $\rightarrow$ 控制 & $10\unit{Hz}$ \\
+\path{/mavros/setpoint_raw/attitude} & \path{mavros_msgs/AttitudeTarget} & 控制 $\rightarrow$ PX4 & $100\unit{Hz}$ \\
+\path{/mavros/state} & \path{mavros_msgs/State} & PX4 $\rightarrow$ 任务/控制 & $10\unit{Hz}$ \\
+\path{/mission/state} & \path{MissionState}（自定义） & 任务 $\rightarrow$ 全系统 & $10\unit{Hz}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{任务状态机}
+
+任务层以有限状态机组织赛项流程，状态包括初始化、起飞、巡航至危险品区、悬停识别、对准投放、巡航至人员区、悬停识别与（决赛第二阶段）救助物资投放、返航、降落，以及异常情况下的失效保护。每个状态定义进入条件、执行动作与退出条件，状态迁移由里程计位置、识别结果、超时计时器三者共同触发。例如“悬停识别”状态在连续 $N$ 帧检测到目标且目标像素偏差进入死区后退出，若超时未检测到目标则执行小范围位置扫描，仍失败则进入失效保护。
+
+\subsubsection{一键启动与自检}
+
+系统以单一 launch 脚本启动全部节点，脚本按依赖顺序拉起激光雷达驱动、相机驱动、FAST-LIO2、Diff-Planner、PX4Ctrl、视觉节点与任务节点，并通过 systemd 服务实现上电自启动。启动过程中执行自检：检查雷达与相机数据流是否正常、IMU 频率是否达标、里程计是否在静止状态下收敛、电池电压是否高于阈值。任一项不通过则在终端与地面站给出明确提示并阻止解锁，避免带着未就绪的模块起飞。
+
+\subsubsection{模式切换与失效保护}
+
+遥控器三段开关映射为 PX4 的定点模式、机外控制模式与手动模式。机外控制节点订阅 PX4 的飞行模式反馈，一旦检测到飞控已退出机外控制模式，立即停止发送姿态指令并把控制权完全交还飞控，保证切换过程无指令冲突。失效保护分为三级：视觉丢失时降级为位置悬停并继续任务；里程计异常或规划连续失败时悬停并请求人工接管；数据链中断超过阈值时按预设策略原地悬停后自动降落。
+
+\subsubsection{回传、标注与录屏}
+
+图传链路将相机画面与检测结果叠加后实时回传，叠加内容包括检测框、类别标签、置信度、飞行高度、速度、电量与当前任务状态，满足“飞行状态实时回传”与“目标标注”两项要求。录屏由机载端与地面站同时进行，机载端直接录制带标注的画面与终端日志，地面站录制程序运行界面，两路素材用于复赛运行视频的剪辑。
+
+\subsection{计算与通信资源预算}
+
+机载计算、感知与控制共享同一颗 Jetson Orin NX，因此必须为每个模块设定明确的算力与时间预算，避免某一模块的峰值占用拖垮整个闭环。表~\ref{tab:budget} 给出各模块的运行频率、单周期时间预算与资源占用估计。
+
+\begin{table}[H]
+\centering
+\caption{机载模块运行时预算}
+\label{tab:budget}
+\footnotesize
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{L{2.7cm}L{2.4cm}L{1.6cm}L{1.7cm}L{1.1cm}L{3.0cm}}
+\toprule
+\textbf{模块} & \textbf{计算单元} & \textbf{频率} & \textbf{单周期} & \textbf{占用} & \textbf{备注} \\
+\midrule
+FAST-LIO2 & CPU（2 核） & $10\unit{Hz}$ & $\leq30\unit{ms}$ & $\sim15\%$ & ikd-Tree 更新 \\
+Diff-Planner & CPU（1 核） & $10\unit{Hz}$ & $\leq20\unit{ms}$ & $\sim8\%$ & 栅格 + A* + L-BFGS \\
+YOLO26 & GPU（FP16） & $20$--$30\unit{Hz}$ & $\leq15\unit{ms}$ & $\sim40\%$ & $640\times640$ 输入 \\
+PX4Ctrl & CPU（0.5 核） & $100\unit{Hz}$ & $\leq2\unit{ms}$ & $\sim3\%$ & 含 RLS 更新 \\
+编码与录屏 & GPU（NVENC） & $30\unit{Hz}$ & $\leq5\unit{ms}$ & $\sim5\%$ & $1080\unit{p}$ H.264 \\
+MAVROS/状态机 & CPU（0.5 核） & $50\unit{Hz}$ & --- & $\sim4\%$ & 遥测与 OSD \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+按上述预算，CPU 峰值占用约 $50\%$（4/8 核），GPU 峰值约 $60\%$，内存占用不超过 $6\unit{GB}$，整机机载计算功耗控制在 $25\unit{W}$ 以内，为 $12\unit{min}$ 级悬停续航留出余量。从相机曝光到姿态指令更新的端到端时延可估算为：曝光 $16.7\unit{ms}$、传输与拷贝 $3\unit{ms}$、预处理 $3\unit{ms}$、推理 $15\unit{ms}$、后处理与决策 $2\unit{ms}$、控制周期 $10\unit{ms}$，合计约 $50\unit{ms}$。在 $1\unit{m/s}$ 的悬停修正速度下，该时延对应的位置滞后约 $5\unit{cm}$，小于投放任务区 $400\unit{mm}$ 的尺度，不会成为投放精度的瓶颈。
+
+\subsection{选型对比}
+
+表~\ref{tab:alternatives} 汇总了各功能环节的备选方案与最终选择。需要说明的是，部分备选方案（如动捕、UWB）在技术上更成熟，但被赛项规则明确禁止，因此不在可选范围内。
+
+\begin{table}[H]
+\centering
+\caption{核心模块选型对比}
+\label{tab:alternatives}
+\footnotesize
+\renewcommand{\arraystretch}{1.05}
+\begin{tabular}{L{1.5cm}L{4.1cm}L{3.0cm}L{4.9cm}}
+\toprule
+\textbf{环节} & \textbf{备选方案} & \textbf{本系统选型} & \textbf{决策依据} \\
+\midrule
+定位 & 动捕/UWB、VINS-Fusion、LOAM & FAST-LIO2 & 前两者被规则禁止；视觉方案在弱纹理白墙场景易退化；LOAM 依赖线束特征，不适配非重复扫描雷达 \\
+识别 & 模板匹配、YOLOv8/v11、RT-DETR & YOLO26 & 模板匹配对透视与光照敏感；YOLO26 端到端无 NMS、小目标配方更契合，部署最简单 \\
+规划 & 固定航线、人工势场、EGO-Planner & Diff-Planner & 固定航线无法应对随机障碍；人工势场易陷局部极小；Diff-Planner 在线建图且轨迹动力学可行 \\
+控制 & PX4 原生位置控制、欧拉角 PID & PX4Ctrl 几何控制 & 原生位置控制带宽与抗扰不足；欧拉角 PID 在大倾角下有奇异与线性化误差 \\
+通信 & 自定义串口协议、ROS 话题直连 & MAVLink + ROS & 标准协议生态完善，便于遥测、参数与日志工具复用 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+上述对比中，有两处选择需要额外说明。其一是识别模型：RT-DETR 一类基于 Transformer 的检测器在精度上与 YOLO26 处于同一量级，但其自注意力算子在 Orin NX 上的算子融合与显存占用不如卷积网络友好，且在 $640$ 分辨率、小目标为主的场景中优势并不明显，因此不作为首选。其二是规划器：EGO-Planner 原版以 ESDF 维护障碍物距离场，其建图与查询开销在 $7\unit{m}$ 级局部地图上尚可接受，但本系统需要在 $10\unit{Hz}$ 重规划的同时为视觉推理让出 CPU，Diff-Planner 采用的膨胀占据栅格计数查询在精度损失可忽略的前提下显著降低了单周期开销。
+
+需要强调的是，表~\ref{tab:alternatives} 中的选择并非绝对最优，而是面向本赛项“场地小、障碍随机、算力受限、现场不允许改参数”这一组约束的折中。凡涉及精度的选择（如检测模型尺度、栅格分辨率）均留有可现场调整的参数入口，但调整范围被限制在预置配置文件中，避免比赛中因误操作引入不可复现的状态。
+
+\subsection{小结}
+
+本章将赛项约束逐条映射为技术指标，给出了“平台—中间件—算法—任务”四层技术栈，并说明了各核心模块的选型依据与接口关系。总体来看，技术栈的选择遵循三条原则：其一，定位与感知必须完全自主，以规避规则禁止的外置定位并应对抽签带来的不确定性；其二，视觉与控制在时间尺度上解耦，保证控制内环始终获得连续可微的参考；其三，所有模块的算力与功耗预算统一编排，使系统能够在单电池、$10\unit{min}$ 含调试的约束下可靠运行。后续章节将分别对视觉识别、状态估计、轨迹规划、飞行控制与任务流程展开详细设计与验证。

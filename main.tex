@@ -1,0 +1,168 @@
+% !TEX program = xelatex
+\documentclass{ctexart}
+
+% ============ 页面设置 ============
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% ============ 数学与符号 ============
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+
+% ============ 图表 ============
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+
+\renewcommand{\arraystretch}{1.18}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% ============ 主题框 ============
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\newtcolorbox[auto counter]{techbox}[1][]{
+    enhanced,
+    colback=Blue!5!white,
+    colframe=NavyBlue!70!black,
+    fonttitle=\bfseries,
+    title=技术要点~\thetcbcounter: #1,
+}
+
+% ============ 代码列表 ============
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  backgroundcolor=\color{gray!10},
+  keywordstyle=\color{blue},
+  commentstyle=\color{green!60!black},
+  stringstyle=\color{red!70!black},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  numbersep=5pt,
+  extendedchars=false,
+  literate=
+  {├}{{\textbar--}}2
+  {─}{{-}}1
+  {│}{{\textbar}}1
+  {└}{{\textasciigrave--}}2
+}
+
+% ============ 算法 ============
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% ============ 绘图 ============
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,matrix,calc,fit,backgrounds}
+
+% ============ 页面样式 ============
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% ============ 微排版优化 ============
+\usepackage{microtype}
+
+% ============ 引用与超链接 (最后加载) ============
+\usepackage{cite}
+\usepackage[colorlinks=true, allcolors=black]{hyperref}
+
+% ============ 自定义数学命令 ============
+\newcommand{\xvec}{\mathbf{x}}
+\newcommand{\pvec}{\mathbf{p}}
+\newcommand{\vvec}{\mathbf{v}}
+\newcommand{\qvec}{\mathbf{q}}
+\newcommand{\Rmat}{\mathbf{R}}
+\newcommand{\Ical}{\mathbf{I}}
+\newcommand{\Hcal}{\mathbf{H}}
+\newcommand{\Kcal}{\mathbf{K}}
+\newcommand{\Pcal}{\mathbf{P}}
+\newcommand{\Qcal}{\mathbf{Q}}
+\newcommand{\unit}[1]{\,\mathrm{#1}}
+
+% ============ 标题与作者 ============
+\title{\textbf{风形一号：面向低空消防的高机动四旋翼自主穿梭系统}}
+\author{郑信哲\ 董子恒\ 张韬\ 徐登格}
+\date{}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+
+\vspace*{2cm}
+
+{\fontsize{48}{56}\bfseries 技\hspace{0.5em}术\hspace{0.5em}报\hspace{0.5em}告\par}
+\vspace{2.5cm}
+
+{\Large\bfseries 团队成员\par}
+\vspace{0.4cm}
+{\Large
+\begin{tabular}{cl}
+郑信哲 & 通信工程学院 \\
+董子恒 & 自动化学院 \\
+张韬   & 卓越学院 \\
+徐登格 & 通信工程学院 \\
+\end{tabular}
+\par}
+\vspace{1.5cm}
+
+{\Large\bfseries 指导教师\par}
+\vspace{0.3cm}
+{\Large
+\begin{tabular}{cl}
+黄娜   & \multirow{2}{*}{通信工程学院} \\
+徐广通 & \\
+\end{tabular}
+\par}
+\vspace{4cm}
+
+{\LARGE\bfseries 杭州电子科技大学\par}
+
+
+\vfill
+{\large 2026年11月\par}
+\end{titlepage}
+
+\clearpage
+\setcounter{tocdepth}{2}
+\tableofcontents
+\clearpage
+
+% ============================================================
+% 第 1 章：引言
+% ============================================================
+\input{sections/introduction.tex}
+\clearpage
+
+% ============================================================
+% 第 2 章：技术栈
+% ============================================================
+\input{sections/tech_stack.tex}
+\clearpage
+
+% ============================================================
+% 后续章节（待编写，对应模块详细设计）
+% ============================================================
+% \input{sections/vision.tex}
+% \clearpage
+% \input{sections/state_estimation.tex}
+% \clearpage
+% \input{sections/planner.tex}
+% \clearpage
+% \input{sections/controller.tex}
+% \clearpage
+% \input{sections/mission.tex}
+% \clearpage
+% \input{sections/experiments.tex}
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+\end{document}

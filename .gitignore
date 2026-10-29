@@ -1,0 +1,21 @@
+# ---- LaTeX 编译中间产物（每次编译都会变，不进版本库）----
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex*
+*.blg
+*.bbl
+*.xdv
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ---- 说明 ----
+# main.pdf、封面预览.png、sections/、references.bib、main.tex 需要提交，故不忽略。
