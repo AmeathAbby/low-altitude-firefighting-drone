@@ -305,6 +305,15 @@ $10\unit{Hz}$ 激光帧到达时执行 IEKF 迭代校正，修正累积漂移；
 
 接口与资源方面，两路舵机由任务状态机经 PWM 信号独立控制，开合行程由齿条有效长度与滑轨限位共同约束；投放机构仅在投放瞬间动作，不占用机载计算资源，其功耗与动作时间计入平台层预算。
 
+装置的整体构型、舱门与货舱的相对位置以及齿轮齿条传动副的布置关系如图~\ref{fig:delivery_device} 所示：舵机驱动的主动小齿轮与固定于舱门底部的齿条沿滑轨方向啮合，齿条两侧由滑轨约束，从而将舵机的转角精确转化为舱门的直线开合行程。
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.72\textwidth]{delivery_device}
+\caption{物资投放装置及其齿轮齿条结构展示}
+\label{fig:delivery_device}
+\end{figure}
+
 \subsection{任务调度与系统集成}
 
 \subsubsection{模块接口与数据约定}\label{sec:iface}
